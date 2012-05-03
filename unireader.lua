@@ -1209,6 +1209,8 @@ function UniReader:setzoom(page, preCache)
 
 	debug("page::getUsedBBox", x0, y0, x1, y1 )
 
+	debug("BEFORE self.globalzoom_mode",self.globalzoom_mode)
+
 	if self.globalzoom_mode == self.ZOOM_FIT_TO_PAGE
 	or self.globalzoom_mode == self.ZOOM_FIT_TO_CONTENT then
 		self.globalzoom = width / pwidth
@@ -1252,6 +1254,7 @@ function UniReader:setzoom(page, preCache)
 		self.content_top = self.offset_y
 		-- enable pan mode in ZOOM_FIT_TO_CONTENT_WIDTH
 		self.globalzoom_mode = self.ZOOM_FIT_TO_CONTENT_WIDTH_PAN
+		debug("XX globalzoom_mode", self.globalzoom_mode)
 	elseif self.globalzoom_mode == self.ZOOM_FIT_TO_CONTENT_WIDTH_PAN then
 		if self.content_top == -2012 then
 			-- We must handle previous page turn as a special cases,
@@ -1491,6 +1494,7 @@ function UniReader:nextView()
 	local pageno = self.pageno
 
 	if self.globalzoom_mode == self.ZOOM_FIT_TO_CONTENT_WIDTH_PAN then
+		debug("offset_y",self.offset_y,">=",self.content_top)
 		if self.offset_y <= self.min_offset_y then
 			-- hit content bottom, turn to next page
 			self.globalzoom_mode = self.ZOOM_FIT_TO_CONTENT_WIDTH
@@ -1518,6 +1522,7 @@ function UniReader:prevView()
 	local pageno = self.pageno
 
 	if self.globalzoom_mode == self.ZOOM_FIT_TO_CONTENT_WIDTH_PAN then
+		debug("offset_y",self.offset_y,">=",self.content_top)
 		if self.offset_y >= self.content_top then
 			-- hit content top, turn to previous page
 			-- set self.content_top with magic num to signal self:setZoom
